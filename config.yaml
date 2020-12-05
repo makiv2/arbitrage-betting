@@ -1,0 +1,5 @@
+api:
+  betfair:
+    url: https://api.betfair.com/exchange/betting/rest/v1.0/
+    application_key: xxx
+    session_token: xxx
