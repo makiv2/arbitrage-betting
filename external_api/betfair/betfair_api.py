@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 
 import requests
@@ -24,18 +25,10 @@ def get_event_types():
     return betfair_api_post_request(endpoint)
 
 
-def get_events(eventTypeId=2):
+def get_events(eventTypeId=6422):
     endpoint = "listEvents/"
     body = '{"filter":''{"eventTypeIds":''["' + str(
         eventTypeId) + '"]}}'
-    return betfair_api_post_request(endpoint, body)
-
-
-def get_market_catalogue(eventTypeId=2, max_results=1000):
-    endpoint = "listMarketCatalogue/"
-    now = datetime.now().strftime('%Y-%m-%dT%H:%M:%SZ')
-    body = '{"filter":''{"eventTypeIds":''["' + str(
-        eventTypeId) + '"],"marketStartTime":{"from":"' + now + '"}}, "maxResults":"' + str(max_results) + '}'
     return betfair_api_post_request(endpoint, body)
 
 
@@ -44,5 +37,35 @@ def get_market_types():
     return betfair_api_post_request(endpoint)
 
 
-def get_market_book():
+def get_market_catalogue(eventId, max_results=100):
+    endpoint = "listMarketCatalogue/"
+    now = datetime.now().strftime('%Y-%m-%dT%H:%M:%SZ')
+    body = '{"filter":{"eventIds":["' + str(
+        eventId) + '"],"marketStartTime":{"from":"' + now + '"}},"sort":"FIRST_TO_START","maxResults":' + str(
+        max_results) + ' }'
+    return betfair_api_post_request(endpoint, body)
+
+
+def get_market_book(marketId):
     endpoint = "listMarketBook/"
+    body = '{"marketIds":["' + marketId + '"],"priceProjection":{"priceData":["EX_BEST_OFFERS"]}}'
+
+    return betfair_api_post_request(endpoint, body)
+
+
+def print_price_info(market_book_result):
+    print('Please find Best three available prices for the runners')
+    for marketBook in market_book_result:
+        try:
+            runners = marketBook["runners"]
+            for runner in runners:
+                print(runner)
+
+                print('Selection id is ' + str(runner['selectionId']))
+                if (runner['status'] == 'ACTIVE'):
+                    print('Available to back price :' + str(runner['ex']['availableToBack']))
+                    print('Available to lay price :' + str(runner['ex']['availableToLay']))
+                else:
+                    print('This runner is not active')
+        except:
+            print('No runners available for this market')
