@@ -1,21 +1,17 @@
-import json
-
-from external_api.betfair.betfair_api import betfair_api_post_request, get_market_catalogue, get_market_types, \
-    get_events, get_market_book, print_price_info, list_runner_book
+from calculator.roicalculator import calculate_odds
+from matcher.match_games import match_games
+from scraper.betfairscraper.betfairscraper import betfairscrape
+from scraper.unibetscaper.unibetscaper import unibetscrape
 
 
 def main():
-    response = get_events()
-    #print(json.dumps(json.loads(response.text), indent=3))
-    response = get_market_catalogue("30169676")
-    print(json.dumps(json.loads(response.text), indent=3))
-    response = get_market_book("1.176479557")
-    #print(json.dumps(json.loads(response.text), indent=3))
-
-    #response1 = print_price_info(json.loads(response.text))
-
-    response2 = list_runner_book("1.176479557", "2278790")
-    #print(json.dumps(json.loads(response2.text), indent=3))
+    list_of_percentages = []
+    unitbet_list = unibetscrape()
+    betfair_list = betfairscrape()
+    game_sets = match_games(unitbet_list,betfair_list)
+    for game_pair in game_sets:
+        list_of_percentages.append(calculate_odds(game_pair[0], game_pair[1]))
+    print(list_of_percentages)
 
 if __name__ == "__main__":
     main()
