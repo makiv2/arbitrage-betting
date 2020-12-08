@@ -1,4 +1,5 @@
 class BetInformation:
+
     def __init__(self, player_one, player_two, player_one_odds, player_two_odds, time_of_game, time_of_data, website):
         self.player_one = player_one
         self.player_two = player_two

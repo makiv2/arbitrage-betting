@@ -1,5 +1,4 @@
-api:
-  betfair:
-    url: https://api.betfair.com/exchange/betting/rest/v1.0/
-    application_key: RsXKZ60VgBHjztPS
-    session_token: yO2UMnMQudD17kfl19MLfZK7Wg5mfLczosJ07vZf5Uw=
+betfair:
+    url: https://www.betfair.com/sport/tennis
+unibet:
+    url: https://www.unibet.eu/betting/sports/filter/tennis

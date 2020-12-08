@@ -3,7 +3,7 @@ import yaml
 from util.path.path import get_abs_path
 
 
-def get_config():
+def get_config() -> dict:
     with open(get_abs_path("config.yaml"), 'r') as stream:
         try:
             config = yaml.safe_load(stream)
